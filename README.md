@@ -1,2 +1,2 @@
 # Openstack
-Openstack分布式安装
+Openstack（Queen）分布式安装
