@@ -54,5 +54,3 @@ OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 `# service apache2 reload`
 
 可以通过http://controller/horizon访问
-
- <img src="D:\BOX\openstack-pic\11.png" alt="11" style="zoom:80%;" />
