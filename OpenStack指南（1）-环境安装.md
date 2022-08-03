@@ -12,8 +12,6 @@
 
 所有虚拟交换机接受混杂模式和伪传输
 
- <img src="D:\BOX\openstack-pic\13.png" alt="13" style="zoom:80%;" />
-
 | host       | ens160                               | ens192                                 |
 | ---------- | ------------------------------------ | -------------------------------------- |
 | controller | 192.168.10.10/24（openstack-manage） | 192.168.20.10/24（openstack-provider） |
@@ -142,7 +140,7 @@ allow 192.168.10.0/24
 
 `# chronyc sources`
 
- ![1](D:\BOX\openstack-pic\1.png)
+
 
 #### compute1
 
@@ -158,8 +156,6 @@ server controller iburst
 `# service chrony restart`
 
 `# chronyc sources`
-
- ![2](D:\BOX\openstack-pic\2.png)
 
 
 
