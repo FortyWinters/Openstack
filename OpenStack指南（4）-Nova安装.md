@@ -210,5 +210,3 @@ virt_type  =  qemu
 
 确认安装成功
 
- ![3](D:\BOX\openstack-pic\3.png)
-
