@@ -1,0 +1,76 @@
+使用python2安装
+$ apt-get install build-essential python-dev libssl-dev libffi-dev libxml2 libxml2-dev libxslt1-dev zlib1g-dev
+千万不要 pip install -r requirements.txt !!!!!!!!!!!!!!!!!!!!!!
+先安装tacker
+$ python setup.py install
+在生成tacker.conf的时候缺什么pip装什么
+$ pip install tosca-parser==0.8.1
+$ pip install kubernetes==4.0.0 --ignore-installed enum34
+$ pip install heat-translator==0.4.0
+
+
+[DEFAULT]
+auth_strategy = keystone
+policy_file = /usr/local/etc/tacker/policy.json
+debug = True
+use_syslog = False
+bind_host = 10.112.100.10
+bind_port = 9890
+service_plugins = nfvo,vnfm
+state_path = /var/lib/tacker
+
+[nfvo_vim]
+vim_drivers = openstack
+
+[keystone_authtoken]
+memcached_servers = 11211
+region_name = RegionOne
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+username = tacker
+project_name = service
+password = 123
+auth_url = http://controller:5000
+auth_uri = http://controller:5000
+
+
+[agent]
+root_helper = sudo /usr/local/bin/tacker-rootwrap /usr/local/etc/tacker/rootwrap.conf
+
+
+[database]
+connection = mysql+pymysql://tacker:123@controller:3306/tacker?charset=utf8
+
+[tacker]
+monitor_driver = ping,http_ping
+
+
+
+更改一下mistral的missing问题
+python /usr/local/bin/tacker-server --config-file /usr/local/etc/tacker/tacker.conf --log-file /var/log/tacker/tacker.log
+python /usr/local/bin/tacker-conductor --config-file /usr/local/etc/tacker/tacker.conf --log-file /var/log/tacker/tacker-conductor.log
+queens的官网教程少了这句话
+
+更改vim_ping的py文件
+populate进mistral的数据库中
+
+Default中创建nfv_user
+Default中创建nfv项目
+
+为nfv_user添加admin角色
+为nfv_user添加heat_stack_owner角色
+
+注册VIM 
+nfv_user
+nfv
+Default
+
+上传VNFd
+部署VNF
+
+若遇见AUTH认证的问题
+一定是heat.conf出问题
+或者重新创建一个heat_domain_admin用户
+
+登入nfv_user账户可以看到VNF啦！！！！！！！

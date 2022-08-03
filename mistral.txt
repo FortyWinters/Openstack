@@ -1,0 +1,48 @@
+不要按照官方教程，比较混乱
+安装教程：https://blog.csdn.net/cao0507/article/details/78882221
+
+更新apt
+$ apt-get update
+$ apt-get upgrade
+$ apt-get dist-upgrade
+
+安装python依赖，更新pip
+$ apt-get install build-essential python-dev libssl-dev libffi-dev libxml2 libxml2-dev libxslt1-dev zlib1g-dev
+$ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+$ python get-pip.py
+
+创建mistral服务端点
+$ openstack service create --name mistral --description "Openstack Workflow service" workflowv2
+$ openstack endpoint create --region RegionOne workflowv2 public http://controller:8989/v2
+$ openstack endpoint create --region RegionOne workflowv2 internal http://controller:8989/v2
+$ openstack endpoint create --region RegionOne workflowv2 admin http://controller:8989/v2
+
+安装mistral
+$ cd mistral
+$ git checkout stable/queens
+$ pip install -r requirement.txt
+
+
+/etc/mistral/mistral.conf
+
+[DEFAULT]
+transport_url = rabbit://openstack:123@controller
+
+[keystone_authtoken]
+www_authenticate_uri = http://controller:5000/v3
+memcached_servers = controller:11211
+auth_url = http://controller:5000
+auth_type = password
+username = admin
+password = 123
+user_domain_name = Default
+project_name = admin
+project_domain_name = Default
+service_token_roles_required = true
+
+[database]
+connection = mysql+pymysql://mistral:123@controller/mistral
+
+
+启动mistral
+root@controller:~/mistral# python mistral/cmd/launch.py --server all --config-file /etc/mistral/mistral.conf
